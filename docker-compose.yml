@@ -1,0 +1,11 @@
+version: "1.0"
+services:
+  postgresDB:
+    image: postgres:14.4
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "admin"
+      POSTGRES_DB: "DemorDB"
