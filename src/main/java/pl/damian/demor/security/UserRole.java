@@ -8,8 +8,8 @@ import com.google.common.collect.Sets;
 
 public enum UserRole {
 
-    CUSTOMER(Sets.newHashSet()),
-    MANAGER(Sets.newHashSet(UserPermission.GET_ALL_USERS));
+    BASIC_USER(Sets.newHashSet()),
+    ADMIN(Sets.newHashSet(UserPermission.GET_ALL_USERS));
 
     private final Set<UserPermission> permissions;
 
