@@ -11,7 +11,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.damian.demor.DTO.authentication.AuthenticationRequest;
 import pl.damian.demor.DTO.authentication.AuthenticationResponse;
-import pl.damian.demor.security.JwtConfiguration;
+import pl.damian.demor.exception.authentication.AuthenticationFailureException;
+import pl.damian.demor.security.configuration.JwtConfiguration;
 
 import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
@@ -44,11 +45,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     authenticationRequest.getPassword()
             );
 
-            Authentication authenticate = authenticationManager.authenticate(authentication);
-            return authenticate;
+            return authenticationManager.authenticate(authentication);
 
         }catch(IOException exception){
-            throw new RuntimeException(exception);
+            throw new AuthenticationFailureException();
         }
     }
 
@@ -79,4 +79,5 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 )
         );
     }
+
 }

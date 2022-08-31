@@ -1,4 +1,4 @@
-package pl.damian.demor.security;
+package pl.damian.demor.security.configuration;
 
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;

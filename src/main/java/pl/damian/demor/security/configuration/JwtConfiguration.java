@@ -1,4 +1,4 @@
-package pl.damian.demor.security;
+package pl.damian.demor.security.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
