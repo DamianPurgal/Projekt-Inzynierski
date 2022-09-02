@@ -56,8 +56,9 @@ public class AuthenticationController {
     public AuthenticationResponse refreshJWT(@RequestBody @NotNull RefreshJWTRequest request){
 
         try{
-            Jws<Claims> claimsJws = Jwts.parser()
+            Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(secretKeyRefreshToken)
+                    .build()
                     .parseClaimsJws(request.getRefreshToken());
 
             Claims body = claimsJws.getBody();

@@ -48,8 +48,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         try {
 
-            Jws<Claims> claimsJws = Jwts.parser()
+            Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(secretKeyAccessToken)
+                    .build()
                     .parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();
