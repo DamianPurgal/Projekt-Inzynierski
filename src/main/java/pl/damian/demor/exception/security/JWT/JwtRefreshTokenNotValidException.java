@@ -1,4 +1,4 @@
-package pl.damian.demor.exception.JWT;
+package pl.damian.demor.exception.security.JWT;
 
 import org.springframework.http.HttpStatus;
 import pl.damian.demor.exception.BusinessException;

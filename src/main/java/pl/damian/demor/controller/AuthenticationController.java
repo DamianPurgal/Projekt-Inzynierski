@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.damian.demor.DTO.AppUser.RegisterAppUserDTO;
 import pl.damian.demor.DTO.JWT.RefreshJWTRequest;
-import pl.damian.demor.exception.JWT.JwtRefreshTokenNotValidException;
+import pl.damian.demor.exception.security.JWT.JwtRefreshTokenNotValidException;
 import pl.damian.demor.security.configuration.JwtConfiguration;
 import pl.damian.demor.security.response.authentication.AuthenticationResponse;
 import pl.damian.demor.service.definition.AppUserService;

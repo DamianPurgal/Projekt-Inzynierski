@@ -1,4 +1,4 @@
-package pl.damian.demor.exception.authorization;
+package pl.damian.demor.exception.security.authorization;
 
 import org.springframework.http.HttpStatus;
 import pl.damian.demor.exception.BusinessException;

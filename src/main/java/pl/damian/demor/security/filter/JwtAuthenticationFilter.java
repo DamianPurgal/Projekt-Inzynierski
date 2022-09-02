@@ -11,7 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.damian.demor.security.response.authentication.AuthenticationRequest;
 import pl.damian.demor.security.response.authentication.AuthenticationResponse;
-import pl.damian.demor.exception.authentication.AuthenticationFailureException;
+import pl.damian.demor.exception.security.authentication.AuthenticationFailureException;
 import pl.damian.demor.security.configuration.JwtConfiguration;
 
 import javax.crypto.SecretKey;
