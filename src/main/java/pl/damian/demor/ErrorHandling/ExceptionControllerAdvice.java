@@ -2,6 +2,7 @@ package pl.damian.demor.ErrorHandling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.damian.demor.exception.BusinessException;
@@ -10,7 +11,7 @@ import pl.damian.demor.exception.BusinessException;
 public class ExceptionControllerAdvice {
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> handleMissingRequiredProperties(BusinessException exception) {
+    public ResponseEntity<ErrorResponse> businessExceptionHandler(BusinessException exception) {
         return ResponseEntity.status(exception.getStatus())
                 .body(
                         ErrorResponse.builder()
@@ -20,8 +21,19 @@ public class ExceptionControllerAdvice {
                 );
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(AccessDeniedException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(
+                        ErrorResponse.builder()
+                                .status(HttpStatus.FORBIDDEN)
+                                .message("Authorization denied")
+                                .build()
+                );
+    }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleMissingRequiredProperties(Exception exception) {
+    public ResponseEntity<ErrorResponse> exceptionHandler(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(
                         ErrorResponse.builder()
@@ -30,4 +42,5 @@ public class ExceptionControllerAdvice {
                                 .build()
                 );
     }
+
 }

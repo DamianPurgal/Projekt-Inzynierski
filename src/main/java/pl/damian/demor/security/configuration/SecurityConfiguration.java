@@ -55,8 +55,7 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/api/auth/register").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers(HttpMethod.POST, "/login").permitAll();
 
         http.authenticationProvider(authenticationProvider());
 
@@ -91,7 +90,5 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
     public UserDetailsService userDetailsService() {
         return userService;
     }
-
-
 
 }

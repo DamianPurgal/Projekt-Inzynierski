@@ -1,4 +1,4 @@
-package pl.damian.demor.DTO.authentication;
+package pl.damian.demor.security.response.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

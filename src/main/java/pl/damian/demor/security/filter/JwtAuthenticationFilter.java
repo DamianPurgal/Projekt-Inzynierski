@@ -9,8 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.damian.demor.DTO.authentication.AuthenticationRequest;
-import pl.damian.demor.DTO.authentication.AuthenticationResponse;
+import pl.damian.demor.security.response.authentication.AuthenticationRequest;
+import pl.damian.demor.security.response.authentication.AuthenticationResponse;
 import pl.damian.demor.exception.authentication.AuthenticationFailureException;
 import pl.damian.demor.security.configuration.JwtConfiguration;
 
@@ -70,7 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .signWith(secretKeyRefreshToken)
                 .compact();
 
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.OK.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(),
                 new AuthenticationResponse(

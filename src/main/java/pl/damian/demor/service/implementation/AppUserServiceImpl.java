@@ -52,6 +52,16 @@ public class AppUserServiceImpl implements AppUserService {
                 );
     }
 
+    @Override
+    public AppUserDTO getUserByEmail(String email) {
+        return appUserMapper.mapAppUserToAppUserDTO(
+                appUserRepository.findByEmail(email)
+                        .orElseThrow(
+                                () -> new UsernameNotFoundException(String.format("User %s not found", email))
+                        )
+        );
+    }
+
     private boolean isExistingUser(String email){
         return appUserRepository.findByEmail(email).isPresent();
     }

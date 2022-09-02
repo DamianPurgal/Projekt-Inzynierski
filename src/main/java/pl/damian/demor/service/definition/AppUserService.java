@@ -8,4 +8,6 @@ public interface AppUserService extends UserDetailsService {
 
     AppUserDTO registerUser(RegisterAppUserDTO user);
 
+    AppUserDTO getUserByEmail(String email);
+
 }
