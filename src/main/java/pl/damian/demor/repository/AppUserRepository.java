@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface AppUserRepository extends CrudRepository<AppUser, Long> {
 
     Optional<AppUser> findByEmail(String email);
+
+    void deleteAppUserByEmail(String email);
 }

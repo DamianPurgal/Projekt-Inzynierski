@@ -3,9 +3,7 @@ package pl.damian.demor.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.damian.demor.DTO.AppUser.AppUserDTO;
 import pl.damian.demor.service.definition.AppUserService;
 
@@ -22,4 +20,21 @@ public class AppUserController {
 
         return appUserService.getUserByEmail(loggedUserEmail);
     }
+
+    @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
+    public AppUserDTO editUserInfo(){
+        String loggedUserEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return appUserService.getUserByEmail(loggedUserEmail);
+    }
+
+    @DeleteMapping
+    @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
+    public void deleteUser(){
+        String loggedUserEmail = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        appUserService.deleteUserByEmail(loggedUserEmail);
+    }
+
 }
