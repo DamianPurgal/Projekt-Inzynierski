@@ -3,6 +3,7 @@ package pl.damian.demor.ErrorHandling;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.damian.demor.exception.BusinessException;
@@ -28,6 +29,17 @@ public class ExceptionControllerAdvice {
                         ErrorResponse.builder()
                                 .status(HttpStatus.FORBIDDEN)
                                 .message("Authorization denied")
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> exceptionHandler(MethodArgumentNotValidException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(
+                        ErrorResponse.builder()
+                                .status(HttpStatus.BAD_REQUEST)
+                                .message(exception.getFieldError().getDefaultMessage())
                                 .build()
                 );
     }
