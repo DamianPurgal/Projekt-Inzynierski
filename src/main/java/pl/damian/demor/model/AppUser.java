@@ -48,13 +48,13 @@ public class AppUser implements UserDetails{
     @Column(name="enabled")
     private Boolean enabled = true;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Ticket> tickets = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Comment> comments = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<BlackboardContributor> contributes = new LinkedHashSet<>();
 
 

@@ -26,6 +26,7 @@ public class BlackboardContributor {
     private AppUser user;
 
     @Column(name = "role", nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private ContributorRole role;
 
 }
