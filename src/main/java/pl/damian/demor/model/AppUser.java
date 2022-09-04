@@ -7,6 +7,8 @@ import pl.damian.demor.security.UserRole;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -45,6 +47,16 @@ public class AppUser implements UserDetails{
 
     @Column(name="enabled")
     private Boolean enabled = true;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Ticket> tickets = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "author")
+    private Set<Comment> comments = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<BlackboardContributor> contributes = new LinkedHashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
