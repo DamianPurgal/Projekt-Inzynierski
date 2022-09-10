@@ -21,7 +21,7 @@ public class BlackboardContributor {
     @JoinColumn(name = "blackboard_id")
     private Blackboard blackboard;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private AppUser user;
 

@@ -6,7 +6,7 @@ CREATE TABLE Blackboards(
     color varchar(255) NOT NULL
 );
 
-CREATE TABLE BlackboardColumns(
+CREATE TABLE Blackboard_Columns(
      ID BIGSERIAL PRIMARY KEY,
      Blackboard_id integer NOT NULL,
      name varchar(255) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE blackboard_contributors(
     role varchar(255) NOT NULL
 );
 
-ALTER TABLE BlackboardColumns
+ALTER TABLE Blackboard_Columns
     ADD CONSTRAINT Columns_Blackboard_id_fkey
         FOREIGN KEY (Blackboard_id) REFERENCES Blackboards (id);
 
@@ -49,7 +49,7 @@ ALTER TABLE tickets
 
 ALTER TABLE tickets
     ADD CONSTRAINT tickets_Column_id_fkey
-        FOREIGN KEY (Column_id) REFERENCES BlackboardColumns (id);
+        FOREIGN KEY (Column_id) REFERENCES Blackboard_Columns (id);
 
 ALTER TABLE comments
     ADD CONSTRAINT comments_author_id_fkey

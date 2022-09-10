@@ -11,6 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class BlackboardDTO {
 
+    private Long id;
+
     private String name;
 
     private String description;
