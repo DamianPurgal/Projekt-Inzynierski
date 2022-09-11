@@ -12,9 +12,14 @@ import pl.damian.demor.exception.user.UserEmailIsNotAvailableException;
 import pl.damian.demor.exception.user.UserPasswordsDoesntMatchException;
 import pl.damian.demor.mapper.AppUserMapper;
 import pl.damian.demor.model.AppUser;
+import pl.damian.demor.model.BlackboardContributor;
+import pl.damian.demor.model.ContributorRole;
 import pl.damian.demor.repository.AppUserRepository;
+import pl.damian.demor.repository.BlackboardRepository;
 import pl.damian.demor.security.UserRole;
 import pl.damian.demor.service.definition.AppUserService;
+
+import javax.transaction.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +30,8 @@ public class AppUserServiceImpl implements AppUserService {
     private final PasswordEncoder passwordEncoder;
 
     private final AppUserMapper appUserMapper;
+
+    private final BlackboardRepository blackboardRepository;
 
     @Override
     public AppUserDTO registerUser(RegisterAppUserDTO user) {
@@ -86,12 +93,20 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    @Transactional
     public void deleteUserByEmail(String email) {
-        if(isExistingUser(email)){
-            appUserRepository.deleteAppUserByEmail(email);
-        }else{
-            throw new UsernameNotFoundException(String.format("User %s not found", email));
-        }
+        AppUser user = appUserRepository.findByEmail(email)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException(String.format("User %s not found", email))
+                );
+        user.getContributes().stream()
+                .filter(contribution ->
+                        contribution.getRole()
+                                .equals(ContributorRole.OWNER)
+                ).map(BlackboardContributor::getBlackboard)
+                .forEach(blackboardRepository::delete);
+
+        appUserRepository.delete(user);
     }
 
     private boolean isExistingUser(String email){
