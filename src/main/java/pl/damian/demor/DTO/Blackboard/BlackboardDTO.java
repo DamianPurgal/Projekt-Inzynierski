@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pl.damian.demor.model.ContributorRole;
 
 @Getter
 @Setter
@@ -18,4 +19,6 @@ public class BlackboardDTO {
     private String description;
 
     private String color;
+
+    private ContributorRole role;
 }
