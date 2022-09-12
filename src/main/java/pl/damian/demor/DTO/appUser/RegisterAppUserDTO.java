@@ -1,4 +1,4 @@
-package pl.damian.demor.DTO.AppUser;
+package pl.damian.demor.DTO.appUser;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

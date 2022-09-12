@@ -3,9 +3,9 @@ package pl.damian.demor.service.implementation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.damian.demor.DTO.Blackboard.BlackboardAddContributorDTO;
-import pl.damian.demor.DTO.Blackboard.BlackboardDTO;
-import pl.damian.demor.DTO.Blackboard.BlackboardEditDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardPermissionDeniedException;
 import pl.damian.demor.exception.blackboardContributor.BlackboardContributorArleadyExistsException;
 import pl.damian.demor.mapper.BlackboardMapper;
@@ -158,7 +158,7 @@ public class BlackboardServiceImpl implements BlackboardService {
                 .toList();
     }
 
-    private Blackboard getBlackboardOfUserWithAnyRoleInList(AppUser owner, List<ContributorRole> roles, Long blackboardId){
+    private Blackboard getBlackboardOfUserWithAnyRoleInList(AppUser owner, List<ContributorRole> roles, Long blackboardId) {
         return owner.getContributes()
                 .stream()
                 .filter(
@@ -176,7 +176,7 @@ public class BlackboardServiceImpl implements BlackboardService {
                 );
     }
 
-    private BlackboardDTO getBlackboardDtoOfUser(AppUser owner, Long blackboardId){
+    private BlackboardDTO getBlackboardDtoOfUser(AppUser owner, Long blackboardId) {
         return mapContributionToBlackboardDTO(
                 owner.getContributes()
                         .stream()
@@ -194,14 +194,14 @@ public class BlackboardServiceImpl implements BlackboardService {
         );
     }
 
-    private AppUser findUser(String username){
+    private AppUser findUser(String username) {
         return appUserRepository.findByEmail(username)
                 .orElseThrow(
                         () -> new UsernameNotFoundException(String.format("User %s not found", username))
                 );
     }
 
-    private BlackboardDTO mapContributionToBlackboardDTO(BlackboardContributor contribution){
+    private BlackboardDTO mapContributionToBlackboardDTO(BlackboardContributor contribution) {
         BlackboardDTO blackboardDTO = blackboardMapper.mapBlackboardToBlackboardDto(
                 contribution.getBlackboard()
         );

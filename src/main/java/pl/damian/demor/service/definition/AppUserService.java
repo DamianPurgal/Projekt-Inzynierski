@@ -1,9 +1,9 @@
 package pl.damian.demor.service.definition;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import pl.damian.demor.DTO.AppUser.AppUserDTO;
-import pl.damian.demor.DTO.AppUser.EditAppUserDTO;
-import pl.damian.demor.DTO.AppUser.RegisterAppUserDTO;
+import pl.damian.demor.DTO.appUser.AppUserDTO;
+import pl.damian.demor.DTO.appUser.EditAppUserDTO;
+import pl.damian.demor.DTO.appUser.RegisterAppUserDTO;
 
 public interface AppUserService extends UserDetailsService {
 

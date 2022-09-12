@@ -5,9 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.damian.demor.DTO.AppUser.AppUserDTO;
-import pl.damian.demor.DTO.AppUser.EditAppUserDTO;
-import pl.damian.demor.DTO.AppUser.RegisterAppUserDTO;
+import pl.damian.demor.DTO.appUser.AppUserDTO;
+import pl.damian.demor.DTO.appUser.EditAppUserDTO;
+import pl.damian.demor.DTO.appUser.RegisterAppUserDTO;
 import pl.damian.demor.exception.user.UserEmailIsNotAvailableException;
 import pl.damian.demor.exception.user.UserPasswordsDoesntMatchException;
 import pl.damian.demor.mapper.AppUserMapper;
@@ -35,7 +35,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUserDTO registerUser(RegisterAppUserDTO user) {
-        if(isExistingUser(user.getEmail())){
+        if (isExistingUser(user.getEmail())) {
             throw new UserEmailIsNotAvailableException();
         }
 

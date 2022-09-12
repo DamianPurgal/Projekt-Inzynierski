@@ -1,8 +1,8 @@
 package pl.damian.demor.service.definition;
 
-import pl.damian.demor.DTO.Blackboard.BlackboardAddContributorDTO;
-import pl.damian.demor.DTO.Blackboard.BlackboardDTO;
-import pl.damian.demor.DTO.Blackboard.BlackboardEditDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 
 import java.util.List;
 

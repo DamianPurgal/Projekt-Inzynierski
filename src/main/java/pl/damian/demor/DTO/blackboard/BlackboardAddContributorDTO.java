@@ -1,4 +1,4 @@
-package pl.damian.demor.DTO.Blackboard;
+package pl.damian.demor.DTO.blackboard;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        try{
+        try {
             AuthenticationRequest authenticationRequest = new ObjectMapper()
                     .readValue(request.getInputStream(), AuthenticationRequest.class);
 
@@ -47,13 +47,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             return authenticationManager.authenticate(authentication);
 
-        }catch(IOException exception){
+        } catch(IOException exception) {
             throw new AuthenticationFailureException();
         }
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request,
+                                            HttpServletResponse response,
+                                            FilterChain chain,
+                                            Authentication authResult
+    ) throws IOException, ServletException {
 
         String accessToken = Jwts.builder()
                 .setSubject(authResult.getName())

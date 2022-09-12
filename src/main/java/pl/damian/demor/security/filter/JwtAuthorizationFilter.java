@@ -36,7 +36,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final SecretKey secretKeyAccessToken;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain
+    ) throws ServletException, IOException {
+
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfiguration.getTokenPrefix())) {

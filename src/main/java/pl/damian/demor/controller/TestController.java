@@ -28,7 +28,7 @@ public class TestController {
     @GetMapping()
     @PreAuthorize("permitAll()")
     @Transactional
-    public BlackboardContributor xd(){
+    public BlackboardContributor xd() {
         AppUser user = userRepository.save(AppUser.builder()
                         .email("DamianDamian@gmail.com")
                         .firstname("Damian")

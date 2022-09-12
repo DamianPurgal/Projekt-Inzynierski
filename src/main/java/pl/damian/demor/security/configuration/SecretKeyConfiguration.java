@@ -19,7 +19,7 @@ public class SecretKeyConfiguration {
     }
 
     @Bean
-    public SecretKey secretKeyRefreshToken(){
+    public SecretKey secretKeyRefreshToken() {
         return Keys.hmacShaKeyFor(jwtConfiguration.getSecretKeyRefreshToken().getBytes());
     }
 }

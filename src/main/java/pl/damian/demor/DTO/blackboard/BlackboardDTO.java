@@ -1,4 +1,4 @@
-package pl.damian.demor.DTO.Blackboard;
+package pl.damian.demor.DTO.blackboard;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

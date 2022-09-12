@@ -47,9 +47,9 @@ public class AuthenticationController {
     @PostMapping("/refreshToken")
     @PreAuthorize("permitAll()")
     @Operation(summary = "Refresh JWT", description = "Refresh JWT")
-    public AuthenticationResponse refreshJWT(@RequestBody @NotNull RefreshJWTRequest request){
+    public AuthenticationResponse refreshJWT(@RequestBody @NotNull RefreshJWTRequest request) {
 
-        try{
+        try {
             Jws<Claims> claimsJws = Jwts.parserBuilder()
                     .setSigningKey(secretKeyRefreshToken)
                     .build()
@@ -73,7 +73,7 @@ public class AuthenticationController {
                     request.getRefreshToken()
             );
 
-        }catch(Exception exception){
+        } catch (Exception exception) {
             throw new JwtRefreshTokenNotValidException();
         }
     }

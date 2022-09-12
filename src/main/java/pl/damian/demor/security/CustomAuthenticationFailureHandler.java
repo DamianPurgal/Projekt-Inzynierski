@@ -16,7 +16,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        AuthenticationException exception
+    ) throws IOException, ServletException {
+
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), new AuthenticationFailureResponse());

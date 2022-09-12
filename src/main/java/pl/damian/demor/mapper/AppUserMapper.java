@@ -1,8 +1,8 @@
 package pl.damian.demor.mapper;
 
 import org.mapstruct.Mapper;
-import pl.damian.demor.DTO.AppUser.AppUserDTO;
-import pl.damian.demor.DTO.AppUser.RegisterAppUserDTO;
+import pl.damian.demor.DTO.appUser.AppUserDTO;
+import pl.damian.demor.DTO.appUser.RegisterAppUserDTO;
 import pl.damian.demor.model.AppUser;
 
 @Mapper()

@@ -1,4 +1,4 @@
-package pl.damian.demor.OpenApi;
+package pl.damian.demor.openApi;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

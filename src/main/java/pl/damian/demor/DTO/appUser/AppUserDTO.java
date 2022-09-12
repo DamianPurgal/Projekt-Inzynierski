@@ -1,4 +1,4 @@
-package pl.damian.demor.DTO.AppUser;
+package pl.damian.demor.DTO.appUser;
 
 import lombok.Builder;
 import lombok.Getter;

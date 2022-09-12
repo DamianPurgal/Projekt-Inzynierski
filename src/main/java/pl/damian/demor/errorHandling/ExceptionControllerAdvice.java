@@ -1,4 +1,4 @@
-package pl.damian.demor.ErrorHandling;
+package pl.damian.demor.errorHandling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

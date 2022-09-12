@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name="USERS")
-public class AppUser implements UserDetails{
+public class AppUser implements UserDetails {
 
     @Id
     @GeneratedValue(
