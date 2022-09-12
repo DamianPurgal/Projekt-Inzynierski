@@ -54,7 +54,7 @@ public class AppUser implements UserDetails{
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Comment> comments = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BlackboardContributor> contributes = new LinkedHashSet<>();
 
 

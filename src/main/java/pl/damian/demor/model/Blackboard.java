@@ -32,10 +32,10 @@ public class Blackboard {
     @Column(name = "color", nullable = false)
     private String color;
 
-    @OneToMany(mappedBy = "blackboard")
+    @OneToMany(mappedBy = "blackboard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<BlackboardColumn> columns = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "blackboard")
+    @OneToMany(mappedBy = "blackboard", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<BlackboardContributor> contributors = new LinkedHashSet<>();
 
 }
