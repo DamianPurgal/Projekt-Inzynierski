@@ -5,6 +5,7 @@ import pl.damian.demor.DTO.blackboard.BlackboardDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface BlackboardService {
 
@@ -14,11 +15,11 @@ public interface BlackboardService {
 
     List<BlackboardDTO> getAllBlackboards();
 
-    BlackboardDTO editBlackboard(BlackboardEditDTO blackboardEditDTO, Long blackboardId);
+    BlackboardDTO editBlackboard(BlackboardEditDTO blackboardEditDTO, String ownerUsername, UUID blackboardUUID);
 
-    void deleteBlackboard(Long blackboardId, String ownerUsername);
+    void deleteBlackboard(UUID blackboardUUID, String ownerUsername);
 
-    BlackboardDTO getBlackboardInformations(Long blackboardId, String ownerUsername);
+    BlackboardDTO getBlackboardInformations(UUID blackboardUUID, String ownerUsername);
 
     List<BlackboardDTO> getAllBlackboardsOfUser(String username);
 

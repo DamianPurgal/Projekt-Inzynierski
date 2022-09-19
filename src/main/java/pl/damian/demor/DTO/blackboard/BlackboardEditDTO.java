@@ -19,6 +19,4 @@ public class BlackboardEditDTO {
     @Schema(description="Blackboard color theme", example = "#00FF00")
     private String color;
 
-    @Schema(description="Owner username (email)", example = "DamianPurgal5@gmail.com")
-    private String ownerUsername;
 }

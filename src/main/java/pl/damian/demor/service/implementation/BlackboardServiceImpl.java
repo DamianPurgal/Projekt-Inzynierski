@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
+import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
 import pl.damian.demor.exception.blackboard.BlackboardPermissionDeniedException;
 import pl.damian.demor.exception.blackboardContributor.BlackboardContributorArleadyExistsException;
 import pl.damian.demor.mapper.BlackboardMapper;
@@ -42,10 +43,9 @@ public class BlackboardServiceImpl implements BlackboardService {
                 blackboardDTO
         );
 
-        blackboardToAdd.setLinkId(UUID.randomUUID().toString());
+        blackboardToAdd.setUuid(UUID.randomUUID());
 
         Blackboard blackboard = blackboardRepository.save(blackboardToAdd);
-
 
         BlackboardContributor contributor =  BlackboardContributor.builder()
                 .blackboard(blackboard)
@@ -69,7 +69,7 @@ public class BlackboardServiceImpl implements BlackboardService {
                         request.getOwnerUsername()
                 ),
                 List.of(ContributorRole.OWNER),
-                request.getBlackboardId()
+                request.getBlackboardUUID()
         );
 
         blackboard.getContributors()
@@ -103,13 +103,13 @@ public class BlackboardServiceImpl implements BlackboardService {
 
     @Override
     @Transactional
-    public BlackboardDTO editBlackboard(BlackboardEditDTO blackboardEditDTO, Long blackboardId) {
+    public BlackboardDTO editBlackboard(BlackboardEditDTO blackboardEditDTO, String ownerUsername, UUID blackboardUUID) {
         Blackboard blackboard = getBlackboardOfUserWithAnyRoleInList(
                 findUser(
-                        blackboardEditDTO.getOwnerUsername()
+                        ownerUsername
                 ),
                 List.of(ContributorRole.OWNER),
-                blackboardId
+                blackboardUUID
         );
 
         blackboard.setColor(blackboardEditDTO.getColor());
@@ -127,24 +127,34 @@ public class BlackboardServiceImpl implements BlackboardService {
 
     @Override
     @Transactional
-    public void deleteBlackboard(Long blackboardId, String ownerUsername) {
-        Blackboard blackboard = getBlackboardOfUserWithAnyRoleInList(
-                findUser(
-                        ownerUsername
-                ),
-                List.of(ContributorRole.OWNER),
-                blackboardId
-        );
+    public void deleteBlackboard(UUID blackboardUUID, String ownerUsername) {
 
-        blackboardRepository.delete(blackboard);
+        Blackboard blackboard = blackboardRepository.findByUuid(blackboardUUID)
+                        .orElseThrow(BlackboardNotFoundException::new);
+
+        blackboard.getContributors().stream()
+                        .filter(
+                                contributor -> contributor.getUser()
+                                        .getEmail()
+                                        .equals(ownerUsername)
+                                &&
+                                        contributor.getRole()
+                                                .equals(ContributorRole.OWNER)
+                        ).findFirst()
+                        .ifPresentOrElse(
+                                contributor -> blackboardRepository.delete(blackboard),
+                                () -> {
+                                    throw new BlackboardPermissionDeniedException();
+                                }
+                        );
     }
 
     @Override
     @Transactional
-    public BlackboardDTO getBlackboardInformations(Long blackboardId, String ownerUsername) {
+    public BlackboardDTO getBlackboardInformations(UUID blackboardUUID, String ownerUsername) {
         return getBlackboardDtoOfUser(
                 findUser(ownerUsername),
-                blackboardId
+                blackboardUUID
         );
     }
 
@@ -158,7 +168,7 @@ public class BlackboardServiceImpl implements BlackboardService {
                 .toList();
     }
 
-    private Blackboard getBlackboardOfUserWithAnyRoleInList(AppUser owner, List<ContributorRole> roles, Long blackboardId) {
+    private Blackboard getBlackboardOfUserWithAnyRoleInList(AppUser owner, List<ContributorRole> roles, UUID blackboardUUID) {
         return owner.getContributes()
                 .stream()
                 .filter(
@@ -167,8 +177,8 @@ public class BlackboardServiceImpl implements BlackboardService {
                         )
                 )
                 .map(BlackboardContributor::getBlackboard)
-                .filter(board -> board.getId()
-                        .equals(blackboardId)
+                .filter(board -> board.getUuid()
+                        .equals(blackboardUUID)
                 )
                 .findFirst()
                 .orElseThrow(
@@ -176,15 +186,15 @@ public class BlackboardServiceImpl implements BlackboardService {
                 );
     }
 
-    private BlackboardDTO getBlackboardDtoOfUser(AppUser owner, Long blackboardId) {
+    private BlackboardDTO getBlackboardDtoOfUser(AppUser owner, UUID blackboardUUID) {
         return mapContributionToBlackboardDTO(
                 owner.getContributes()
                         .stream()
                         .filter(
                                 contribution -> contribution.getBlackboard()
-                                        .getId()
+                                        .getUuid()
                                         .equals(
-                                                blackboardId
+                                                blackboardUUID
                                         )
                         )
                         .findAny()

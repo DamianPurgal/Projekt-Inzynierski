@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardAddDTO;
@@ -16,6 +15,7 @@ import pl.damian.demor.service.definition.BlackboardService;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.util.List;
+import java.util.UUID;
 
 import static pl.damian.demor.util.AppUserUtil.getLoggedUserUsername;
 
@@ -43,11 +43,11 @@ public class BlackboardController {
         );
     }
 
-    @PostMapping("/{BlackboardId}")
+    @PostMapping("/{blackboardUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Add contributor", description = "Add contributor to blackboard by LinkId")
     @SecurityRequirement(name = "Bearer Authentication")
-    public void addContributorToBlackboard(@PathVariable("BlackboardId") Long blackboardId,
+    public void addContributorToBlackboard(@PathVariable("blackboardUUID") UUID blackboardUUID,
                                            @RequestParam @Email String contributor)
     {
         String loggedUserUsername = getLoggedUserUsername();
@@ -56,7 +56,7 @@ public class BlackboardController {
                 BlackboardAddContributorDTO.builder()
                         .contributorUsername(contributor)
                         .ownerUsername(loggedUserUsername)
-                        .blackboardId(blackboardId)
+                        .blackboardUUID(blackboardUUID)
                         .build()
         );
     }
@@ -71,48 +71,44 @@ public class BlackboardController {
         return blackboardService.getAllBlackboardsOfUser(loggedUserUsername);
     }
 
-    @GetMapping("/{BlackboardId}")
+    @GetMapping("/{blackboardUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Get blackboard informations", description = "Get blackboard informations")
     @SecurityRequirement(name = "Bearer Authentication")
-    public BlackboardDTO getBlackboardInformations(@PathVariable("BlackboardId") Long blackboardId) {
+    public BlackboardDTO getBlackboardInformations(@PathVariable("blackboardUUID") UUID blackboardUUID) {
         String loggedUserUsername = getLoggedUserUsername();
 
         return blackboardService.getBlackboardInformations(
-                blackboardId,
+                blackboardUUID,
                 loggedUserUsername
         );
     }
 
-    @PutMapping("/{BlackboardId}")
+    @PutMapping("/{blackboardUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Edit blackboard", description = "Edit blackboard")
     @SecurityRequirement(name = "Bearer Authentication")
-    public BlackboardDTO editBlackboard(@PathVariable("BlackboardId") Long blackboardId,
-                                           @RequestBody BlackboardDTO blackboardDTO)
+    public BlackboardDTO editBlackboard(@PathVariable("blackboardUUID") UUID blackboardUUID,
+                                           @RequestBody BlackboardEditDTO blackboardEditDTO)
     {
         String loggedUserUsername = getLoggedUserUsername();
 
         return blackboardService.editBlackboard(
-                BlackboardEditDTO.builder()
-                        .color(blackboardDTO.getColor())
-                        .name(blackboardDTO.getName())
-                        .description(blackboardDTO.getDescription())
-                        .ownerUsername(loggedUserUsername)
-                        .build(),
-                blackboardId
+                blackboardEditDTO,
+                loggedUserUsername,
+                blackboardUUID
         );
     }
 
-    @DeleteMapping("/{BlackboardId}")
+    @DeleteMapping("/{blackboardUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Delete blackboard", description = "Delete blackboard")
     @SecurityRequirement(name = "Bearer Authentication")
-    public void deleteBlackboard(@PathVariable("BlackboardId") Long blackboardId) {
+    public void deleteBlackboard(@PathVariable("blackboardUUID") UUID blackboardUUID) {
         String loggedUserUsername = getLoggedUserUsername();
 
         blackboardService.deleteBlackboard(
-                blackboardId,
+                blackboardUUID,
                 loggedUserUsername
         );
     }

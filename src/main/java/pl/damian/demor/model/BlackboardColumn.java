@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,6 +19,9 @@ public class BlackboardColumn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "uuid", nullable = false)
+    private UUID uuid;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "blackboard_id", nullable = false)

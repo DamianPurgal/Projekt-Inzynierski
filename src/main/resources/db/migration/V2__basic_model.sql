@@ -1,6 +1,6 @@
 CREATE TABLE Blackboards(
     ID BIGSERIAL PRIMARY KEY,
-    link_id varchar(255) NOT NULL,
+    uuid uuid NOT NULL,
     name varchar(255) NOT NULL,
     description varchar(255) NOT NULL,
     color varchar(255) NOT NULL
@@ -8,6 +8,7 @@ CREATE TABLE Blackboards(
 
 CREATE TABLE Blackboard_Columns(
      ID BIGSERIAL PRIMARY KEY,
+     uuid uuid NOT NULL,
      Blackboard_id integer NOT NULL,
      name varchar(255) NOT NULL,
      color varchar(255) NOT NULL,
@@ -16,6 +17,7 @@ CREATE TABLE Blackboard_Columns(
 
 CREATE TABLE tickets(
     ID BIGSERIAL PRIMARY KEY,
+    uuid uuid NOT NULL,
     Column_id integer NOT NULL,
     User_id bigint NOT NULL,
     name varchar(255) NOT NULL,
@@ -26,6 +28,7 @@ CREATE TABLE tickets(
 
 CREATE TABLE comments(
     ID BIGSERIAL PRIMARY KEY,
+    uuid uuid NOT NULL,
     ticket_id integer NOT NULL,
     author_id bigint NOT NULL,
     text varchar(255) NOT NULL,

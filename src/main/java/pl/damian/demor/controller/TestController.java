@@ -43,7 +43,6 @@ public class TestController {
                 Blackboard.builder()
                         .color("red")
                         .name("nazwa")
-                        .linkId("LINK_ID#1")
                         .description("test description")
                         .build()
         );

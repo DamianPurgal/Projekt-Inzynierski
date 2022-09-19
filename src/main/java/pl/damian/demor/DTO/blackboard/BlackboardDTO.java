@@ -6,13 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.damian.demor.model.ContributorRole;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BlackboardDTO {
 
-    private Long id;
+    private UUID uuid;
 
     private String name;
 
