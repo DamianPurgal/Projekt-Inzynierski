@@ -7,5 +7,4 @@ public class BlackboardPermissionDeniedException extends BusinessException {
 
     public BlackboardPermissionDeniedException() { super(HttpStatus.BAD_REQUEST, "Permission to blackboard denied"); }
 
-    public BlackboardPermissionDeniedException(String message) { super(HttpStatus.BAD_REQUEST, message); }
 }

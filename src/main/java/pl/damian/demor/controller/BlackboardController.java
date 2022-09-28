@@ -21,7 +21,7 @@ import static pl.damian.demor.util.AppUserUtil.getLoggedUserUsername;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/blackboard")
+@RequestMapping("api/blackboards")
 public class BlackboardController {
 
     private final BlackboardService blackboardService;

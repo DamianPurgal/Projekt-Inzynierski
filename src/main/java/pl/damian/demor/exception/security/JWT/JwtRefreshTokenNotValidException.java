@@ -7,5 +7,4 @@ public class JwtRefreshTokenNotValidException extends BusinessException {
 
     public JwtRefreshTokenNotValidException() { super(HttpStatus.BAD_REQUEST, "Refresh token not valid"); }
 
-    public JwtRefreshTokenNotValidException(String message) { super(HttpStatus.BAD_REQUEST, message); }
 }

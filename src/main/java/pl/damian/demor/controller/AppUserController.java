@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.damian.demor.DTO.appUser.AppUserDTO;
+import pl.damian.demor.DTO.appUser.EditAppUserDTO;
 import pl.damian.demor.DTO.appUser.RegisterAppUserDTO;
 import pl.damian.demor.service.definition.AppUserService;
 
@@ -17,7 +17,7 @@ import static pl.damian.demor.util.AppUserUtil.getLoggedUserUsername;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 public class AppUserController {
 
     private AppUserService appUserService;
@@ -43,10 +43,13 @@ public class AppUserController {
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Edit user informations", description = "Update user")
     @SecurityRequirement(name = "Bearer Authentication")
-    public AppUserDTO editUserInfo() {
+    public AppUserDTO editUserInfo(@RequestBody EditAppUserDTO editAppUserDTO) {
         String loggedUserEmail = getLoggedUserUsername();
 
-        return appUserService.getUserByEmail(loggedUserEmail);
+        return appUserService.updateUserByEmail(
+                loggedUserEmail,
+                editAppUserDTO
+        );
     }
 
     @DeleteMapping

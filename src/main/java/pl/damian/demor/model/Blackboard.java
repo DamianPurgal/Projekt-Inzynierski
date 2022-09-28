@@ -32,7 +32,7 @@ public class Blackboard {
     @Column(name = "color", nullable = false)
     private String color;
 
-    @OneToMany(mappedBy = "blackboard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "blackboard", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<BlackboardColumn> columns = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "blackboard", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)

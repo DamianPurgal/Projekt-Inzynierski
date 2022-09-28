@@ -13,6 +13,4 @@ public class BlackboardColumnAddDTO {
 
     private String color;
 
-    private Integer position;
-
 }
