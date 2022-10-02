@@ -7,5 +7,4 @@ public class UserEmailIsNotAvailableException extends BusinessException {
 
     public UserEmailIsNotAvailableException() { super(HttpStatus.BAD_REQUEST, "Email arleady exists!"); }
 
-    public UserEmailIsNotAvailableException(String message) { super(HttpStatus.BAD_REQUEST, message); }
 }

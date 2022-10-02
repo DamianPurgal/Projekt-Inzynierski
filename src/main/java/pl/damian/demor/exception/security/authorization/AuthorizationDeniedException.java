@@ -7,5 +7,4 @@ public class AuthorizationDeniedException extends BusinessException {
 
     public AuthorizationDeniedException() { super(HttpStatus.FORBIDDEN, "Authorization denied"); }
 
-    public AuthorizationDeniedException(String message) { super(HttpStatus.FORBIDDEN, message); }
 }
