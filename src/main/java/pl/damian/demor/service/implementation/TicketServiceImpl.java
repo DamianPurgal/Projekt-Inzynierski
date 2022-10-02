@@ -19,6 +19,7 @@ import pl.damian.demor.service.definition.model.TicketPath;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.UUID;
 
 @Service
@@ -33,12 +34,35 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketDTO addTicketToColumn(String ownerUsername, ColumnPath columnPath, TicketAddDTO ticketAddDTO) {
-        return null;
+        BlackboardColumn column = findColumnOfUser(
+                ownerUsername,
+                columnPath
+        );
+
+        Ticket ticketToAdd = ticketMapper.mapTicketAddDtoToTicket(ticketAddDTO);
+        ticketToAdd.setPosition(
+                findNewTicketPositionInColumn(column)
+        );
+        ticketToAdd.setColumn(column);
+        ticketToAdd.setUuid(UUID.randomUUID());
+
+        return ticketMapper.mapTicketToTicketDto(
+                ticketRepository.save(ticketToAdd)
+        );
     }
 
     @Override
+    @Transactional
     public TicketDTO editTicket(String ownerUsername, TicketPath ticketPath, TicketEditDTO ticketEditDTO) {
-        return null;
+        Ticket ticketToEdit = findTicketOfUser(ownerUsername, ticketPath);
+
+        ticketToEdit.setName(ticketEditDTO.getName());
+        ticketToEdit.setDescription(ticketEditDTO.getDescription());
+        ticketToEdit.setColor(ticketEditDTO.getColor());
+
+        return ticketMapper.mapTicketToTicketDto(
+                ticketRepository.save(ticketToEdit)
+        );
     }
 
     @Override
@@ -72,12 +96,57 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<TicketDTO> getAllTicketsOfColumn(String ownerUsername, TicketPath ticketPath) {
-        return null;
+        return findColumnOfUser(
+                ownerUsername,
+                ColumnPath.builder()
+                        .columnUUID(ticketPath.getColumnUUID())
+                        .blackboardUUID(ticketPath.getBlackboardUUID())
+                        .build()
+                ).getTickets()
+                .stream()
+                .map(ticketMapper::mapTicketToTicketDto)
+                .toList();
     }
 
     @Override
+    @Transactional
     public TicketDTO changeTicketPosition(String ownerUsername, TicketPath ticketPath, Integer newPosition) {
-        return null;
+        BlackboardColumn column = findColumnOfUser(
+                ownerUsername,
+                ColumnPath.builder()
+                        .columnUUID(ticketPath.getColumnUUID())
+                        .blackboardUUID(ticketPath.getBlackboardUUID())
+                        .build()
+        );
+
+        Ticket ticketToChange = findTicketOfColumn(column, ticketPath.getTicketUUID());
+
+        Ticket ticketToSwapPosition = column.getTickets().stream()
+                .filter(ticket -> ticket.getPosition().equals(newPosition))
+                .findFirst()
+                .orElseThrow(
+                        TicketNotFoundException::new
+                );
+
+        ticketToSwapPosition.setPosition(ticketToChange.getPosition());
+        ticketToChange.setPosition(newPosition);
+
+        ticketRepository.save(ticketToSwapPosition);
+
+        return ticketMapper.mapTicketToTicketDto(
+                ticketRepository.save(ticketToChange)
+        );
+    }
+
+    private Integer findNewTicketPositionInColumn(BlackboardColumn column) {
+        OptionalInt position = column.getTickets().stream()
+                .mapToInt(Ticket::getPosition)
+                .max();
+        if (position.isPresent()) {
+            return position.getAsInt() + 1;
+        } else {
+            return 0;
+        }
     }
 
     private Ticket findTicketOfUser(String ownerUsername, TicketPath ticketPath) {
