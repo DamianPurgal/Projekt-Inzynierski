@@ -21,6 +21,7 @@ import pl.damian.demor.service.definition.columnService.model.ColumnPath;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.UUID;
 
 @Service
@@ -80,7 +81,7 @@ public class ColumnServiceImpl implements ColumnService {
                 .filter(column -> column.getPosition() > blackboardColumnToDelete.getPosition())
                 .map(column ->
                         {
-                            column.setPosition(column.getPosition() + 1);
+                            column.setPosition(column.getPosition() - 1);
                             return column;
                         }
                 ).toList();
@@ -147,10 +148,14 @@ public class ColumnServiceImpl implements ColumnService {
     }
 
     private Integer findNewColumnPositionInBlackboard(Blackboard blackboard) {
-        return blackboard.getColumns().stream()
+        OptionalInt position = blackboard.getColumns().stream()
                 .mapToInt(BlackboardColumn::getPosition)
-                .max()
-                .orElse(0);
+                .max();
+        if (position.isPresent()) {
+            return position.getAsInt() + 1;
+        } else {
+            return 0;
+        }
     }
 
     private BlackboardColumn findColumnOfBlackboard(Blackboard blackboard, UUID columnUUID) {
