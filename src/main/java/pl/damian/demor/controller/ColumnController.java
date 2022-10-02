@@ -24,7 +24,7 @@ public class ColumnController {
 
     private final ColumnService columnService;
 
-    @PostMapping("/{blackboardUUID}/column")
+    @PostMapping("/{blackboardUUID}/columns")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Create new column", description = "Create new column")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -38,7 +38,7 @@ public class ColumnController {
                 blackboardUUID
         );
     }
-    @DeleteMapping("/{blackboardUUID}/column/{columnUUID}")
+    @DeleteMapping("/{blackboardUUID}/columns/{columnUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Delete column", description = "Delete column")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -55,7 +55,7 @@ public class ColumnController {
         );
     }
 
-    @GetMapping("/{blackboardUUID}/column")
+    @GetMapping("/{blackboardUUID}/columns")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Get all columns of blackboard", description = "Get all columns of blackboard")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -68,7 +68,7 @@ public class ColumnController {
         );
     }
 
-    @PutMapping("/{blackboardUUID}/column/{columnUUID}")
+    @PutMapping("/{blackboardUUID}/columns/{columnUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Edit column", description = "Edit column")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -87,11 +87,11 @@ public class ColumnController {
         );
     }
 
-    @PutMapping("/{blackboardUUID}/column/{columnUUID}/changePosition")
+    @PutMapping("/{blackboardUUID}/columns/{columnUUID}/changePosition")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Change column position", description = "Change column position")
     @SecurityRequirement(name = "Bearer Authentication")
-    public BlackboardColumnDTO editColumnOfBlackboard(@RequestParam Integer newPosition,
+    public BlackboardColumnDTO changeColumnPosition(@RequestParam Integer newPosition,
                                                       @PathVariable UUID blackboardUUID,
                                                       @PathVariable UUID columnUUID) {
         String loggedUserUsername = getLoggedUserUsername();

@@ -16,7 +16,7 @@ public interface TicketService {
 
     void deleteTicket(String ownerUsername, TicketPath ticketPath);
 
-    List<TicketDTO> getAllTicketsOfColumn(String ownerUsername, TicketPath ticketPath);
+    List<TicketDTO> getAllTicketsOfColumn(String ownerUsername, ColumnPath columnPath);
 
     TicketDTO changeTicketPosition(String ownerUsername, TicketPath ticketPath, Integer newPosition);
 

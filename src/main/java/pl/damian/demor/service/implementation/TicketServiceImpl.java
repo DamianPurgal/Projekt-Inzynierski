@@ -59,6 +59,7 @@ public class TicketServiceImpl implements TicketService {
         ticketToEdit.setName(ticketEditDTO.getName());
         ticketToEdit.setDescription(ticketEditDTO.getDescription());
         ticketToEdit.setColor(ticketEditDTO.getColor());
+        ticketToEdit.setUser(null);
 
         return ticketMapper.mapTicketToTicketDto(
                 ticketRepository.save(ticketToEdit)
@@ -95,12 +96,12 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<TicketDTO> getAllTicketsOfColumn(String ownerUsername, TicketPath ticketPath) {
+    public List<TicketDTO> getAllTicketsOfColumn(String ownerUsername, ColumnPath columnPath) {
         return findColumnOfUser(
                 ownerUsername,
                 ColumnPath.builder()
-                        .columnUUID(ticketPath.getColumnUUID())
-                        .blackboardUUID(ticketPath.getBlackboardUUID())
+                        .columnUUID(columnPath.getColumnUUID())
+                        .blackboardUUID(columnPath.getBlackboardUUID())
                         .build()
                 ).getTickets()
                 .stream()
