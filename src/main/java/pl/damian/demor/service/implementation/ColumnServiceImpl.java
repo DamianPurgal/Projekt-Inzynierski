@@ -16,8 +16,8 @@ import pl.damian.demor.model.BlackboardContributor;
 import pl.damian.demor.repository.AppUserRepository;
 import pl.damian.demor.repository.BlackboardColumnRepository;
 import pl.damian.demor.repository.BlackboardRepository;
-import pl.damian.demor.service.definition.columnService.ColumnService;
-import pl.damian.demor.service.definition.columnService.model.ColumnPath;
+import pl.damian.demor.service.definition.ColumnService;
+import pl.damian.demor.service.definition.model.ColumnPath;
 
 import javax.transaction.Transactional;
 import java.util.List;

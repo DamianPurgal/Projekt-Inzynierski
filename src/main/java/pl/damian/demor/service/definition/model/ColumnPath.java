@@ -1,4 +1,4 @@
-package pl.damian.demor.service.definition.columnService.model;
+package pl.damian.demor.service.definition.model;
 
 import lombok.*;
 

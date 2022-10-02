@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnAddDTO;
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnDTO;
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnEditDTO;
-import pl.damian.demor.service.definition.columnService.ColumnService;
-import pl.damian.demor.service.definition.columnService.model.ColumnPath;
+import pl.damian.demor.service.definition.ColumnService;
+import pl.damian.demor.service.definition.model.ColumnPath;
 
 
 import java.util.List;
