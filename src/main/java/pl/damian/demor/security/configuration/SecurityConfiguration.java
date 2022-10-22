@@ -13,6 +13,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import pl.damian.demor.security.CustomAuthenticationFailureHandler;
 import pl.damian.demor.security.filter.JwtAuthenticationFilter;
@@ -20,6 +23,8 @@ import pl.damian.demor.security.filter.JwtAuthorizationFilter;
 import pl.damian.demor.service.definition.AppUserService;
 
 import javax.crypto.SecretKey;
+
+import java.util.Arrays;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -53,6 +58,7 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         http.csrf().disable();
+
         http.authorizeRequests()
                 .antMatchers("/api/auth/register").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll();
@@ -67,7 +73,7 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
 
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
-        return http.build();
+        return http.cors().and().build();
     }
 
     @Bean
@@ -85,7 +91,17 @@ public class SecurityConfiguration extends AbstractHttpConfigurer<SecurityConfig
 
         return authProvider;
     }
-
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
     @Bean
     public UserDetailsService userDetailsService() {
         return userService;

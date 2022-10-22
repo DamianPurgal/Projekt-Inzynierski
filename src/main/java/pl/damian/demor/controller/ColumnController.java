@@ -20,6 +20,7 @@ import static pl.damian.demor.util.AppUserUtil.getLoggedUserUsername;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/blackboards/")
+@CrossOrigin
 public class ColumnController {
 
     private final ColumnService columnService;

@@ -18,6 +18,7 @@ import static pl.damian.demor.util.AppUserUtil.getLoggedUserUsername;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/users")
+@CrossOrigin
 public class AppUserController {
 
     private AppUserService appUserService;
