@@ -29,7 +29,7 @@ public class Ticket {
     private BlackboardColumn column;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private AppUser user;
 
     @Column(name = "name", nullable = false)

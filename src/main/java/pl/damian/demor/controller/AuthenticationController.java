@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.damian.demor.DTO.JWT.RefreshJWTRequest;
 import pl.damian.demor.exception.security.JWT.JwtRefreshTokenNotValidException;
 import pl.damian.demor.security.configuration.JwtConfiguration;
@@ -24,6 +21,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("api/auth")
+@CrossOrigin
 public class AuthenticationController {
 
     private final SecretKey secretKeyAccessToken;

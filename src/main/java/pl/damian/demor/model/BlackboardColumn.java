@@ -37,7 +37,7 @@ public class BlackboardColumn {
     @Column(name = "position", nullable = false)
     private Integer position;
 
-    @OneToMany(mappedBy = "column", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "column", fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<Ticket> tickets = new LinkedHashSet<>();
 
 }

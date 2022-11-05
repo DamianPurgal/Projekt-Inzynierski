@@ -1,9 +1,9 @@
-package pl.damian.demor.service.definition.columnService;
+package pl.damian.demor.service.definition;
 
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnAddDTO;
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnDTO;
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnEditDTO;
-import pl.damian.demor.service.definition.columnService.model.ColumnPath;
+import pl.damian.demor.service.definition.model.ColumnPath;
 
 import java.util.List;
 import java.util.UUID;
