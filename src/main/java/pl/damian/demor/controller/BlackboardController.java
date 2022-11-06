@@ -52,6 +52,7 @@ public class BlackboardController {
                                            @RequestParam @Email String contributor)
     {
         String loggedUserUsername = getLoggedUserUsername();
+        contributor = contributor.toLowerCase();
 
         blackboardService.addContributorToBlackboard(
                 BlackboardAddContributorDTO.builder()

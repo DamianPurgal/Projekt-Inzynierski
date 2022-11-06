@@ -35,6 +35,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUserDTO registerUser(RegisterAppUserDTO user) {
+        user.setEmail(user.getEmail().toLowerCase());
         if (isExistingUser(user.getEmail())) {
             throw new UserEmailIsNotAvailableException();
         }
@@ -112,4 +113,5 @@ public class AppUserServiceImpl implements AppUserService {
     private boolean isExistingUser(String email){
         return appUserRepository.findByEmail(email).isPresent();
     }
+
 }
