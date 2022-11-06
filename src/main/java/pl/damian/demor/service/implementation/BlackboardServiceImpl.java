@@ -1,7 +1,6 @@
 package pl.damian.demor.service.implementation;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardDTO;
@@ -9,6 +8,7 @@ import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
 import pl.damian.demor.exception.blackboard.BlackboardPermissionDeniedException;
 import pl.damian.demor.exception.blackboardContributor.BlackboardContributorArleadyExistsException;
+import pl.damian.demor.exception.user.UserNotFoundException;
 import pl.damian.demor.mapper.BlackboardMapper;
 import pl.damian.demor.model.AppUser;
 import pl.damian.demor.model.Blackboard;
@@ -206,9 +206,7 @@ public class BlackboardServiceImpl implements BlackboardService {
 
     private AppUser findUser(String username) {
         return appUserRepository.findByEmail(username)
-                .orElseThrow(
-                        () -> new UsernameNotFoundException(String.format("User %s not found", username))
-                );
+                .orElseThrow(UserNotFoundException::new);
     }
 
     private BlackboardDTO mapContributionToBlackboardDTO(BlackboardContributor contribution) {
