@@ -5,15 +5,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
-import pl.damian.demor.DTO.blackboard.BlackboardAddDTO;
-import pl.damian.demor.DTO.blackboard.BlackboardDTO;
-import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
+import pl.damian.demor.DTO.blackboard.*;
 import pl.damian.demor.mapper.BlackboardMapper;
 import pl.damian.demor.service.definition.BlackboardService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,25 +37,6 @@ public class BlackboardController {
                         blackboardAddDTO
                 ),
                 loggedUserUsername
-        );
-    }
-
-    @PostMapping("/{blackboardUUID}")
-    @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
-    @Operation(summary = "Add contributor", description = "Add contributor to blackboard by LinkId")
-    @SecurityRequirement(name = "Bearer Authentication")
-    public void addContributorToBlackboard(@PathVariable("blackboardUUID") UUID blackboardUUID,
-                                           @RequestParam @Email String contributor)
-    {
-        String loggedUserUsername = getLoggedUserUsername();
-        contributor = contributor.toLowerCase();
-
-        blackboardService.addContributorToBlackboard(
-                BlackboardAddContributorDTO.builder()
-                        .contributorUsername(contributor)
-                        .ownerUsername(loggedUserUsername)
-                        .blackboardUUID(blackboardUUID)
-                        .build()
         );
     }
 

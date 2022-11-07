@@ -1,6 +1,5 @@
 package pl.damian.demor.service.definition;
 
-import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 
@@ -10,8 +9,6 @@ import java.util.UUID;
 public interface BlackboardService {
 
     BlackboardDTO createBlackboard(BlackboardDTO blackboardDTO, String ownerUsername);
-
-    void addContributorToBlackboard(BlackboardAddContributorDTO request);
 
     List<BlackboardDTO> getAllBlackboards();
 

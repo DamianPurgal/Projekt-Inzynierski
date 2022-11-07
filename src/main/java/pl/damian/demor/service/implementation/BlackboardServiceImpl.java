@@ -2,12 +2,10 @@ package pl.damian.demor.service.implementation;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.damian.demor.DTO.blackboard.BlackboardAddContributorDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
 import pl.damian.demor.exception.blackboard.BlackboardPermissionDeniedException;
-import pl.damian.demor.exception.blackboardContributor.BlackboardContributorArleadyExistsException;
 import pl.damian.demor.exception.user.UserNotFoundException;
 import pl.damian.demor.mapper.BlackboardMapper;
 import pl.damian.demor.model.AppUser;
@@ -56,41 +54,6 @@ public class BlackboardServiceImpl implements BlackboardService {
         contributor = contributorRepository.save(contributor);
 
         return mapContributionToBlackboardDTO(contributor);
-    }
-
-    @Override
-    @Transactional
-    public void addContributorToBlackboard(BlackboardAddContributorDTO request) {
-
-        AppUser userToContribute = findUser(request.getContributorUsername());
-
-        Blackboard blackboard = getBlackboardOfUserWithAnyRoleInList(
-                findUser(
-                        request.getOwnerUsername()
-                ),
-                List.of(ContributorRole.OWNER),
-                request.getBlackboardUUID()
-        );
-
-        blackboard.getContributors()
-                .stream()
-                .map(BlackboardContributor::getUser)
-                .filter(user -> user.getId().equals(
-                        userToContribute.getId()
-                )).findAny()
-                .ifPresent(
-                        user -> {
-                            throw new BlackboardContributorArleadyExistsException();
-                        }
-                );
-
-        BlackboardContributor contribution = BlackboardContributor.builder()
-                .blackboard(blackboard)
-                .user(userToContribute)
-                .role(ContributorRole.CONTRIBUTOR)
-                .build();
-
-        contributorRepository.save(contribution);
     }
 
     @Override
