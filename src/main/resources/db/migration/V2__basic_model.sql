@@ -37,8 +37,8 @@ CREATE TABLE comments(
 
 CREATE TABLE blackboard_contributors(
     ID BIGSERIAL PRIMARY KEY,
-    User_id bigint NOT NULL,
-    Blackboard_id bigint NOT NULL,
+    User_id bigint,
+    Blackboard_id bigint,
     role varchar(255) NOT NULL
 );
 

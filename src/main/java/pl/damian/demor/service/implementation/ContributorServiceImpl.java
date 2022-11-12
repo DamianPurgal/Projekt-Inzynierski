@@ -97,6 +97,8 @@ public class ContributorServiceImpl implements ContributorService {
             throw new ContributorNotFoundException();
         }
 
+        contributor.setBlackboard(null);
+        contributor.setUser(null);
         contributorRepository.delete(contributor);
 
     }
