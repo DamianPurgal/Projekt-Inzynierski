@@ -3,6 +3,7 @@ package pl.damian.demor.service.implementation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.damian.demor.DTO.blackboard.BlackboardDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardDetailedDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
 import pl.damian.demor.exception.blackboard.BlackboardPermissionDeniedException;
@@ -129,6 +130,30 @@ public class BlackboardServiceImpl implements BlackboardService {
                 .stream()
                 .map(this::mapContributionToBlackboardDTO)
                 .toList();
+    }
+
+    @Override
+    public BlackboardDetailedDTO getBlackboardDetailed(UUID blackboardUUID, String ownerUsername) {
+        AppUser owner = findUser(ownerUsername);
+
+        BlackboardContributor blackboardContribution = owner.getContributes()
+                .stream()
+                .filter(
+                        contribution -> contribution.getBlackboard()
+                                .getUuid()
+                                .equals(
+                                        blackboardUUID
+                                )
+                )
+                .findAny()
+                .orElseThrow(
+                        BlackboardPermissionDeniedException::new
+                );
+
+        return blackboardMapper.mapBlackboardToDetailedDto(
+                blackboardContribution.getBlackboard(),
+                blackboardContribution.getRole()
+        );
     }
 
     private Blackboard getBlackboardOfUserWithAnyRoleInList(AppUser owner, List<ContributorRole> roles, UUID blackboardUUID) {

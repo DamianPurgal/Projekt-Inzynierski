@@ -63,6 +63,16 @@ public class BlackboardController {
         );
     }
 
+    @GetMapping("/{blackboardUUID}/detailed")
+    @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
+    @Operation(summary = "Get blackboard detailed informations", description = "Get blackboard detailed informations")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public BlackboardDetailedDTO getBlackboardDetailedInformations(@PathVariable("blackboardUUID") UUID blackboardUUID) {
+        String loggedUserUsername = getLoggedUserUsername();
+
+        return blackboardService.getBlackboardDetailed(blackboardUUID, loggedUserUsername);
+    }
+
     @PutMapping("/{blackboardUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Edit blackboard", description = "Edit blackboard")

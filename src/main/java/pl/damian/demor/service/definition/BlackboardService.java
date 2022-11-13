@@ -1,6 +1,7 @@
 package pl.damian.demor.service.definition;
 
 import pl.damian.demor.DTO.blackboard.BlackboardDTO;
+import pl.damian.demor.DTO.blackboard.BlackboardDetailedDTO;
 import pl.damian.demor.DTO.blackboard.BlackboardEditDTO;
 
 import java.util.List;
@@ -19,5 +20,7 @@ public interface BlackboardService {
     BlackboardDTO getBlackboardInformations(UUID blackboardUUID, String ownerUsername);
 
     List<BlackboardDTO> getAllBlackboardsOfUser(String username);
+
+    BlackboardDetailedDTO getBlackboardDetailed(UUID blackboardUUID, String ownerUsername);
 
 }
