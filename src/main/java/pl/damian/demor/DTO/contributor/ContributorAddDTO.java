@@ -1,4 +1,4 @@
-package pl.damian.demor.DTO.blackboard;
+package pl.damian.demor.DTO.contributor;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class BlackboardAddContributorDTO {
+public class ContributorAddDTO {
 
     @Schema(description="Blackboard UUID", example = "d468d292-d871-4e5a-a64d-af269635f7db")
     private UUID blackboardUUID;
