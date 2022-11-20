@@ -63,7 +63,7 @@ public class TicketController {
         );
     }
 
-    @GetMapping("/{blackboardUUID}/column/{columnUUID}/tickets")
+    @GetMapping("/{blackboardUUID}/columns/{columnUUID}/tickets")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Get all tickets of column", description = "Get all tickets of column")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -80,7 +80,7 @@ public class TicketController {
         );
     }
 
-    @PutMapping("/{blackboardUUID}/column/{columnUUID}/tickets/{ticketUUID}")
+    @PutMapping("/{blackboardUUID}/columns/{columnUUID}/tickets/{ticketUUID}")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Edit ticket", description = "Edit ticket")
     @SecurityRequirement(name = "Bearer Authentication")
@@ -101,7 +101,7 @@ public class TicketController {
         );
     }
 
-    @PutMapping("/{blackboardUUID}/column/{columnUUID}/tickets/{ticketUUID}/changePosition")
+    @PutMapping("/{blackboardUUID}/columns/{columnUUID}/tickets/{ticketUUID}/changePosition")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Change ticket position", description = "Change ticket position")
     @SecurityRequirement(name = "Bearer Authentication")
