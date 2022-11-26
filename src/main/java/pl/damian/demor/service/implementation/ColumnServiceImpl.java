@@ -7,6 +7,7 @@ import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnAddDTO;
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnDTO;
 import pl.damian.demor.DTO.blackboardColumn.BlackboardColumnEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
+import pl.damian.demor.exception.blackboardColumn.BlackboardColumnCannotChangePositionException;
 import pl.damian.demor.exception.blackboardColumn.BlackboardColumnNotFoundException;
 import pl.damian.demor.mapper.BlackboardColumnMapper;
 import pl.damian.demor.model.AppUser;
@@ -113,17 +114,35 @@ public class ColumnServiceImpl implements ColumnService {
 
         BlackboardColumn columnToChange = findColumnOfBlackboard(blackboard, columnPath.getColumnUUID());
 
-        BlackboardColumn columnToSwapPosition = blackboard.getColumns().stream()
-                .filter(column -> column.getPosition().equals(newPosition))
-                .findFirst()
-                .orElseThrow(
-                        BlackboardColumnNotFoundException::new
-                );
+        List<BlackboardColumn> columns = blackboard.getColumns().stream().toList();
 
-        columnToSwapPosition.setPosition(columnToChange.getPosition());
+        if (newPosition > columns.size() - 1) {
+            throw new BlackboardColumnCannotChangePositionException();
+        }
+
+        List<BlackboardColumn> columnsToUpdate;
+
+        if (newPosition < columnToChange.getPosition()) {
+            columnsToUpdate = columns.stream()
+                    .filter(column -> column.getPosition() >= newPosition && column.getPosition() < columnToChange.getPosition())
+                    .map(column -> {
+                        column.setPosition(column.getPosition() + 1);
+                        return column;
+                    })
+                    .toList();
+        } else {
+            columnsToUpdate = columns.stream()
+                    .filter(column -> column.getPosition() > columnToChange.getPosition() && column.getPosition() <= newPosition)
+                    .map(column -> {
+                        column.setPosition(column.getPosition() - 1);
+                        return column;
+                    })
+                    .toList();
+        }
+
         columnToChange.setPosition(newPosition);
+        columnRepository.saveAll(columnsToUpdate);
 
-        columnRepository.save(columnToSwapPosition);
         return blackboardColumnMapper.mapBlackboardColumnToBlackboardColumnDto(
                 columnRepository.save(columnToChange)
         );
