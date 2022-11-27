@@ -122,14 +122,16 @@ public class TicketController {
         );
     }
 
+
     @PutMapping("/{blackboardUUID}/columns/{columnUUID}/tickets/{ticketUUID}/changePosition")
     @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
     @Operation(summary = "Change ticket position", description = "Change ticket position")
     @SecurityRequirement(name = "Bearer Authentication")
-    public TicketDTO changeTicketPosition(@RequestParam Integer newPosition,
-                                                      @PathVariable UUID blackboardUUID,
-                                                      @PathVariable UUID columnUUID,
-                                                      @PathVariable UUID ticketUUID) {
+    public TicketDTO changeTicketColumn(@RequestParam Integer newPosition,
+                                        @RequestParam UUID newColumnUUID,
+                                          @PathVariable UUID blackboardUUID,
+                                          @PathVariable UUID columnUUID,
+                                          @PathVariable UUID ticketUUID) {
         String loggedUserUsername = getLoggedUserUsername();
 
         return ticketService.changeTicketPosition(
@@ -139,7 +141,8 @@ public class TicketController {
                         .columnUUID(columnUUID)
                         .blackboardUUID(blackboardUUID)
                         .build(),
-                newPosition
+                newPosition,
+                newColumnUUID
         );
     }
 

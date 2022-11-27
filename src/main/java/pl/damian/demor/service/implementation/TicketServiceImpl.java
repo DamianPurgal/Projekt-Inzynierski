@@ -9,6 +9,7 @@ import pl.damian.demor.DTO.ticket.TicketDetailedDTO;
 import pl.damian.demor.DTO.ticket.TicketEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
 import pl.damian.demor.exception.blackboardColumn.BlackboardColumnNotFoundException;
+import pl.damian.demor.exception.ticket.TicketCannotChangePositionException;
 import pl.damian.demor.exception.ticket.TicketNotFoundException;
 import pl.damian.demor.exception.user.UserNotFoundException;
 import pl.damian.demor.mapper.TicketMapper;
@@ -20,9 +21,7 @@ import pl.damian.demor.service.definition.model.ColumnPath;
 import pl.damian.demor.service.definition.model.TicketPath;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.OptionalInt;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -120,31 +119,83 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public TicketDTO changeTicketPosition(String ownerUsername, TicketPath ticketPath, Integer newPosition) {
-        BlackboardColumn column = findColumnOfUser(
-                ownerUsername,
-                ColumnPath.builder()
-                        .columnUUID(ticketPath.getColumnUUID())
-                        .blackboardUUID(ticketPath.getBlackboardUUID())
-                        .build()
-        );
+    public TicketDTO changeTicketPosition(String ownerUsername, TicketPath ticketPath, Integer newPosition, UUID newColumnUUID) {
+        if (ticketPath.getColumnUUID().equals(newColumnUUID)) {
+            return changeTicketPositionInTheSameColumn(ownerUsername, ticketPath, newPosition);
+        } else {
+            return changeTicketPositionAndColum(ownerUsername, ticketPath, newPosition, newColumnUUID);
+        }
+    }
 
-        Ticket ticketToChange = findTicketOfColumn(column, ticketPath.getTicketUUID());
+    private TicketDTO changeTicketPositionInTheSameColumn(String ownerUsername, TicketPath ticketPath, Integer newPosition) {
+        Blackboard blackboard = findBlackboardOfUser(ownerUsername, ticketPath.getBlackboardUUID());
+        BlackboardColumn column = findColumnOfBlackboard(blackboard, ticketPath.getColumnUUID());
+        Set<Ticket> tickets = column.getTickets();
+        Ticket ticketToSwap = findTicketOfColumn(column, ticketPath.getTicketUUID());
 
-        Ticket ticketToSwapPosition = column.getTickets().stream()
-                .filter(ticket -> ticket.getPosition().equals(newPosition))
-                .findFirst()
-                .orElseThrow(
-                        TicketNotFoundException::new
-                );
+        if (newPosition > tickets.size() - 1) {
+            throw new TicketCannotChangePositionException();
+        }
 
-        ticketToSwapPosition.setPosition(ticketToChange.getPosition());
-        ticketToChange.setPosition(newPosition);
+        List<Ticket> ticketsToUpdate;
 
-        ticketRepository.save(ticketToSwapPosition);
+        if (newPosition < ticketToSwap.getPosition()) {
+            ticketsToUpdate = tickets.stream()
+                    .filter(ticket -> ticket.getPosition() >= newPosition && ticket.getPosition() < ticketToSwap.getPosition())
+                    .map(ticket -> {
+                        ticket.setPosition(ticket.getPosition() + 1);
+                        return ticket;
+                    })
+                    .toList();
+        } else {
+            ticketsToUpdate = tickets.stream()
+                    .filter(ticket -> ticket.getPosition() > ticketToSwap.getPosition() && ticket.getPosition() <= newPosition)
+                    .map(ticket -> {
+                        column.setPosition(ticket.getPosition() - 1);
+                        return ticket;
+                    })
+                    .toList();
+        }
+        ticketToSwap.setPosition(newPosition);
+        ticketRepository.saveAll(ticketsToUpdate);
 
         return ticketMapper.mapTicketToTicketDto(
-                ticketRepository.save(ticketToChange)
+                ticketRepository.save(ticketToSwap)
+        );
+    }
+
+    private TicketDTO changeTicketPositionAndColum(String ownerUsername, TicketPath ticketPath, Integer newPosition, UUID newColumnUUID) {
+        Blackboard blackboard = findBlackboardOfUser(ownerUsername, ticketPath.getBlackboardUUID());
+        BlackboardColumn column = findColumnOfBlackboard(blackboard, ticketPath.getColumnUUID());
+        BlackboardColumn columnToMoveTicket = findColumnOfBlackboard(blackboard, newColumnUUID);
+        Set<Ticket> ticketsOfColumnToMove = columnToMoveTicket.getTickets();
+
+
+        Ticket ticketToSwap = findTicketOfColumn(column, ticketPath.getTicketUUID());
+
+        List<Ticket> ticketsToUpdate = new ArrayList<>();
+
+        column.getTickets().stream()
+                .filter(ticket -> ticket.getPosition() > ticketToSwap.getPosition())
+                .forEach(ticket -> {
+                    ticket.setPosition(ticket.getPosition() - 1);
+                    ticketsToUpdate.add(ticket);
+                });
+
+        ticketsOfColumnToMove.stream()
+                .filter(ticket -> ticket.getPosition() >= newPosition)
+                .forEach(ticket -> {
+                    ticket.setPosition(ticket.getPosition() + 1);
+                    ticketsToUpdate.add(ticket);
+                });
+
+        ticketRepository.saveAll(ticketsToUpdate);
+
+        ticketToSwap.setColumn(columnToMoveTicket);
+        ticketToSwap.setPosition(newPosition);
+
+        return ticketMapper.mapTicketToTicketDto(
+                ticketRepository.save(ticketToSwap)
         );
     }
 
@@ -233,6 +284,13 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(
                         BlackboardColumnNotFoundException::new
                 );
+    }
+
+    private BlackboardColumn findColumnOfBlackboard(Blackboard blackboard, UUID columnUUID) {
+        return blackboard.getColumns().stream()
+                .filter(column -> column.getUuid().equals(columnUUID))
+                .findFirst()
+                .orElseThrow(BlackboardColumnNotFoundException::new);
     }
 
     private Blackboard findBlackboardOfUser(String ownerUsername, UUID blackboardUUID) {

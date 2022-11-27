@@ -8,6 +8,7 @@ import pl.damian.demor.service.definition.model.ColumnPath;
 import pl.damian.demor.service.definition.model.TicketPath;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TicketService {
 
@@ -19,7 +20,7 @@ public interface TicketService {
 
     List<TicketDTO> getAllTicketsOfColumn(String ownerUsername, ColumnPath columnPath);
 
-    TicketDTO changeTicketPosition(String ownerUsername, TicketPath ticketPath, Integer newPosition);
+    TicketDTO changeTicketPosition(String ownerUsername, TicketPath ticketPath, Integer newPosition, UUID newColumnUUID);
 
     TicketDetailedDTO getTicketDetailed(String ownerUsername, TicketPath ticketPath);
 
