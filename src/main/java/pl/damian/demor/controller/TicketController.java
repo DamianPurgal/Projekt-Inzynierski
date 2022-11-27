@@ -13,6 +13,7 @@ import pl.damian.demor.service.definition.TicketService;
 import pl.damian.demor.service.definition.model.ColumnPath;
 import pl.damian.demor.service.definition.model.TicketPath;
 
+import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.UUID;
 
@@ -139,6 +140,46 @@ public class TicketController {
                         .blackboardUUID(blackboardUUID)
                         .build(),
                 newPosition
+        );
+    }
+
+    @PostMapping("/{blackboardUUID}/columns/{columnUUID}/tickets/{ticketUUID}/assignContributor")
+    @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
+    @Operation(summary = "Assign contributor to ticket", description = "Assign contributor to ticket")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public TicketDTO assignContributorToTicket(@PathVariable UUID blackboardUUID,
+                                               @PathVariable UUID columnUUID,
+                                               @PathVariable UUID ticketUUID,
+                                               @RequestParam @Email String contributor) {
+        String loggedUserUsername = getLoggedUserUsername();
+
+        return ticketService.assignUserToTicket(
+                loggedUserUsername,
+                contributor,
+                TicketPath.builder()
+                        .blackboardUUID(blackboardUUID)
+                        .columnUUID(columnUUID)
+                        .ticketUUID(ticketUUID)
+                        .build()
+        );
+    }
+
+    @PostMapping("/{blackboardUUID}/columns/{columnUUID}/tickets/{ticketUUID}/removeAssigment")
+    @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
+    @Operation(summary = "Remove contributor assigment to ticket", description = "Remove contributor assigment to ticket")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public TicketDTO removeUserAssigmentToTicket(@PathVariable UUID blackboardUUID,
+                                               @PathVariable UUID columnUUID,
+                                               @PathVariable UUID ticketUUID) {
+        String loggedUserUsername = getLoggedUserUsername();
+
+        return ticketService.removeUserAssigmentToTicket(
+                loggedUserUsername,
+                TicketPath.builder()
+                        .blackboardUUID(blackboardUUID)
+                        .columnUUID(columnUUID)
+                        .ticketUUID(ticketUUID)
+                        .build()
         );
     }
 

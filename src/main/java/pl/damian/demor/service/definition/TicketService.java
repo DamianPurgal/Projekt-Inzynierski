@@ -23,4 +23,7 @@ public interface TicketService {
 
     TicketDetailedDTO getTicketDetailed(String ownerUsername, TicketPath ticketPath);
 
+    TicketDTO assignUserToTicket(String ownerUsername, String userToAssignUsername, TicketPath ticketPath);
+
+    TicketDTO removeUserAssigmentToTicket(String ownerUsername, TicketPath ticketPath);
 }

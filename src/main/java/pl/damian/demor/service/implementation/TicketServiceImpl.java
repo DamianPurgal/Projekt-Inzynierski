@@ -10,6 +10,7 @@ import pl.damian.demor.DTO.ticket.TicketEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
 import pl.damian.demor.exception.blackboardColumn.BlackboardColumnNotFoundException;
 import pl.damian.demor.exception.ticket.TicketNotFoundException;
+import pl.damian.demor.exception.user.UserNotFoundException;
 import pl.damian.demor.mapper.TicketMapper;
 import pl.damian.demor.model.*;
 import pl.damian.demor.repository.AppUserRepository;
@@ -144,6 +145,36 @@ public class TicketServiceImpl implements TicketService {
 
         return ticketMapper.mapTicketToTicketDto(
                 ticketRepository.save(ticketToChange)
+        );
+    }
+
+    @Override
+    public TicketDTO assignUserToTicket(String ownerUsername, String userToAssignUsername, TicketPath ticketPath) {
+        Ticket ticket = findTicketOfUser(ownerUsername, ticketPath);
+
+        AppUser userToAssign = ticket.getColumn()
+                .getBlackboard()
+                .getContributors().stream()
+                .map(BlackboardContributor::getUser)
+                .filter(user -> user.getEmail().equals(userToAssignUsername.toLowerCase()))
+                .findFirst()
+                .orElseThrow(UserNotFoundException::new);
+
+        ticket.setUser(userToAssign);
+
+        return ticketMapper.mapTicketToTicketDto(
+                ticketRepository.save(ticket)
+        );
+    }
+
+    @Override
+    public TicketDTO removeUserAssigmentToTicket(String ownerUsername, TicketPath ticketPath) {
+        Ticket ticket = findTicketOfUser(ownerUsername, ticketPath);
+
+        ticket.setUser(null);
+
+        return ticketMapper.mapTicketToTicketDto(
+                ticketRepository.save(ticket)
         );
     }
 
