@@ -3,7 +3,7 @@ package pl.damian.demor.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -35,6 +35,6 @@ public class Comment {
     private String text;
 
     @Column(name = "date", nullable = false)
-    private LocalDate date;
+    private LocalDateTime date;
 
 }

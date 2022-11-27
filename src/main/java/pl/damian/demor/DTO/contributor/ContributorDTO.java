@@ -1,6 +1,7 @@
 package pl.damian.demor.DTO.contributor;
 
 import lombok.*;
+import pl.damian.demor.DTO.appUser.AppUserDTO;
 import pl.damian.demor.model.ContributorRole;
 
 @Getter
@@ -10,7 +11,7 @@ import pl.damian.demor.model.ContributorRole;
 @AllArgsConstructor
 public class ContributorDTO {
 
-    private String email;
+    private AppUserDTO user;
 
     private ContributorRole role;
 }

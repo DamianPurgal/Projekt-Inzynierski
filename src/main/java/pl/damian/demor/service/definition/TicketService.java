@@ -2,6 +2,7 @@ package pl.damian.demor.service.definition;
 
 import pl.damian.demor.DTO.ticket.TicketAddDTO;
 import pl.damian.demor.DTO.ticket.TicketDTO;
+import pl.damian.demor.DTO.ticket.TicketDetailedDTO;
 import pl.damian.demor.DTO.ticket.TicketEditDTO;
 import pl.damian.demor.service.definition.model.ColumnPath;
 import pl.damian.demor.service.definition.model.TicketPath;
@@ -19,5 +20,7 @@ public interface TicketService {
     List<TicketDTO> getAllTicketsOfColumn(String ownerUsername, ColumnPath columnPath);
 
     TicketDTO changeTicketPosition(String ownerUsername, TicketPath ticketPath, Integer newPosition);
+
+    TicketDetailedDTO getTicketDetailed(String ownerUsername, TicketPath ticketPath);
 
 }

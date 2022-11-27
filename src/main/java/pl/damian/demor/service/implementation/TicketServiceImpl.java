@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.damian.demor.DTO.ticket.TicketAddDTO;
 import pl.damian.demor.DTO.ticket.TicketDTO;
+import pl.damian.demor.DTO.ticket.TicketDetailedDTO;
 import pl.damian.demor.DTO.ticket.TicketEditDTO;
 import pl.damian.demor.exception.blackboard.BlackboardNotFoundException;
 import pl.damian.demor.exception.blackboardColumn.BlackboardColumnNotFoundException;
@@ -107,6 +108,13 @@ public class TicketServiceImpl implements TicketService {
                 .stream()
                 .map(ticketMapper::mapTicketToTicketDto)
                 .toList();
+    }
+
+    @Override
+    public TicketDetailedDTO getTicketDetailed(String ownerUsername, TicketPath ticketPath) {
+        return ticketMapper.mapTicketToDetailedDto(
+                findTicketOfUser(ownerUsername, ticketPath)
+        );
     }
 
     @Override

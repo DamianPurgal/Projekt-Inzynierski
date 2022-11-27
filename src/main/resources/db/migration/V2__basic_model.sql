@@ -32,7 +32,7 @@ CREATE TABLE comments(
     ticket_id integer NOT NULL,
     author_id bigint NOT NULL,
     text varchar(255) NOT NULL,
-    date date NOT NULL
+    date timestamp NOT NULL
 );
 
 CREATE TABLE blackboard_contributors(

@@ -44,7 +44,7 @@ public class Ticket {
     @Column(name = "position", nullable = false)
     private Integer position;
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", orphanRemoval = true)
     private Set<Comment> comments = new LinkedHashSet<>();
 
 }

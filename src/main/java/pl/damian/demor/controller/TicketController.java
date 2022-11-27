@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.damian.demor.DTO.ticket.TicketAddDTO;
 import pl.damian.demor.DTO.ticket.TicketDTO;
+import pl.damian.demor.DTO.ticket.TicketDetailedDTO;
 import pl.damian.demor.DTO.ticket.TicketEditDTO;
 import pl.damian.demor.service.definition.TicketService;
 import pl.damian.demor.service.definition.model.ColumnPath;
@@ -76,6 +77,25 @@ public class TicketController {
                 ColumnPath.builder()
                         .columnUUID(columnUUID)
                         .blackboardUUID(blackboardUUID)
+                        .build()
+        );
+    }
+
+    @GetMapping("/{blackboardUUID}/columns/{columnUUID}/tickets/{ticketUUID}/detailed")
+    @PreAuthorize("hasAnyRole('ROLE_BASIC_USER', 'ROLE_ADMIN')")
+    @Operation(summary = "Get detailed information about ticket", description = "Get detailed information about ticket")
+    @SecurityRequirement(name = "Bearer Authentication")
+    public TicketDetailedDTO getDetailedTicket(@PathVariable UUID blackboardUUID,
+                                               @PathVariable UUID columnUUID,
+                                               @PathVariable UUID ticketUUID) {
+        String loggedUserUsername = getLoggedUserUsername();
+
+        return ticketService.getTicketDetailed(
+                loggedUserUsername,
+                TicketPath.builder()
+                        .blackboardUUID(blackboardUUID)
+                        .columnUUID(columnUUID)
+                        .ticketUUID(ticketUUID)
                         .build()
         );
     }
