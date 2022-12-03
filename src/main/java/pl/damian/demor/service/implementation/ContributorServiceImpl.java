@@ -111,7 +111,7 @@ public class ContributorServiceImpl implements ContributorService {
                 findUser(
                         ownerUsername
                 ),
-                List.of(ContributorRole.OWNER),
+                List.of(ContributorRole.OWNER, ContributorRole.CONTRIBUTOR),
                 blackboardUUID
         );
 
