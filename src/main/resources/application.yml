@@ -1,0 +1,49 @@
+spring:
+  profiles:
+    active: development
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: development
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: admin
+    url: jdbc:postgresql://localhost:5432/DemorDB
+    password: admin
+  jpa:
+    properties:
+      hibernate:
+        show_sql: 'true'
+application:
+  jwt:
+    tokenPrefix: Bearer
+    secretKeyRefreshToken: superSecuretRefrestJWTSecretKey123superSecuretRefrestJWTSecretKey123superSecuretRefrestJWTSecretKey123
+    accessTokenExpirationTimeInDays: '10'
+    secretKeyAccessToken: superSecureJWTSecretKey123superSecureJWTSecretKey123superSecureJWTSecretKey123superSecureJWTSecretKey123
+    refreshTokenExpirationTimeInDays: '30'
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: production
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgresDB:5432/DemorDB
+    username: admin
+    password: admin
+  jpa:
+    properties:
+      hibernate:
+        show_sql: 'true'
+application:
+  jwt:
+    tokenPrefix: Bearer
+    secretKeyRefreshToken: superSecuretRefrestJWTSecretKey123superSecuretRefrestJWTSecretKey123superSecuretRefrestJWTSecretKey123
+    accessTokenExpirationTimeInDays: '10'
+    secretKeyAccessToken: superSecureJWTSecretKey123superSecureJWTSecretKey123superSecureJWTSecretKey123superSecureJWTSecretKey123
+    refreshTokenExpirationTimeInDays: '30'
